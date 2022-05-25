@@ -1,0 +1,17 @@
+{
+    "users" :
+    [    
+        {
+          "user" : "web@iperya.com",
+          "psw": "imperyatest"
+         
+        },
+        {
+            "user" : "v.bruno@sincrono.it",
+            "psw": "brubbo22"
+           
+        }
+   
+    ]
+    
+}
