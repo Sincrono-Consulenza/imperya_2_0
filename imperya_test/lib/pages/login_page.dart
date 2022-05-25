@@ -17,14 +17,13 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _email = new TextEditingController();
   TextEditingController _password = new TextEditingController();
 
-  Future<void> Login(String email, String passwrod) async {
+  Future<String> Login(String email, String passwrod) async {
     UserElement currentUser = new UserElement(user: email, psw: passwrod);
     final String response =
         await rootBundle.loadString('assets/data/users.json');
-
     final User data = User.fromJson(jsonDecode(response));
-
     if (data.users.contains(currentUser)) print("Login avvenuto con successo");
+    return "true";
   }
 
 //widget
@@ -108,6 +107,22 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
         ),
+        SizedBox(
+          height: 30,
+        ),
+        FutureBuilder(
+          initialData: "false",
+          future: Login(_email.text, _password.text),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              String value = snapshot.data.toString();
+              return Column(
+                children: [Text(value)],
+              );
+            } else
+              return CircularProgressIndicator();
+          },
+        )
       ],
     ));
   }
