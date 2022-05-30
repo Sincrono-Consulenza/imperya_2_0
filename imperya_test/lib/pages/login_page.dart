@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'package:Imperya/elements/form_text_filed.dart';
 import 'package:Imperya/models/users.dart';
+import 'package:Imperya/pages/privacy_policy_page.dart';
 import 'package:Imperya/pages/register_page.dart';
 import 'package:Imperya/theme/language.dart';
 import 'package:Imperya/theme/references.dart';
@@ -43,27 +44,6 @@ class _LoginPageState extends State<LoginPage> {
 
       return value;
     });
-  }
-
-//widget
-  Widget LoginButton() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: GestureDetector(
-        onTap: () {
-          Login(_email.text, _password.text);
-        },
-        child: Container(
-          color: Colors.redAccent,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: Text("Login"),
-            ),
-          ),
-        ),
-      ),
-    );
   }
 
   @override
@@ -216,9 +196,13 @@ class _LoginPageState extends State<LoginPage> {
                           "accedi senza ",
                           style: ThemeApp.textBlack(),
                         ),
-                        Text(
-                          "Login",
-                          style: ThemeApp.mediumtitleBlack(),
+                        TextButton(
+                          onPressed: () =>
+                              Navigator.pushNamed(context, PolicyPage.tag),
+                          child: Text(
+                            "Login",
+                            style: ThemeApp.mediumtitleBlack(),
+                          ),
                         ),
                       ],
                     ),
