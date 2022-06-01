@@ -44,6 +44,51 @@ class _HomePageState extends State<HomePage> {
           height: MediaQuery.of(context).size.height,
           child: ListView(
             children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.12,
+                child: Row(
+                  children: [
+                    Expanded(child: SizedBox()),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.57,
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        decoration: BoxDecoration(
+                            color: ThemeApp.grey.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(50)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(
+                              child: TextField(
+                            decoration:
+                                InputDecoration(suffixIcon: Icon(Icons.search)),
+                          )),
+                        ),
+                      ),
+                    ),
+                    Expanded(child: SizedBox()),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.2,
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        decoration: BoxDecoration(
+                            color: ThemeApp.grey.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(50)),
+                        child: Center(
+                          child: Icon(
+                            Icons.filter_list_alt,
+                            color: ThemeApp.gold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(child: SizedBox()),
+                  ],
+                ),
+              ),
               FutureBuilder<BannerModel>(
                 // banners Linee
                 initialData: banners,
@@ -115,8 +160,8 @@ class _HomePageState extends State<HomePage> {
                               child: Column(
                                 children: [
                                   GestureDetector(
-                                    onTap: () => Navigator.pushNamed(
-                                        context, "Prodotti"),
+                                    onTap: () => Navigator.pushNamed(context,
+                                        "Prodotti"), //TODO: cambiare nome quando si aggiunge la pagina dei prodotti
                                     child: Container(
                                       width: MediaQuery.of(context).size.width *
                                           0.15,
