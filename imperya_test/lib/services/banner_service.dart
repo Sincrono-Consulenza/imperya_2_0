@@ -7,6 +7,7 @@ class BannerService {
   //singleton
   static BannerService _instance = BannerService();
   static BannerService get instance => _instance;
+
   Future<BannerModel> getBanner() async {
     var url = Uri.parse(
         'https://ssl-conf.imperya.com:8943/ConfiguratorService/banner/getAll');

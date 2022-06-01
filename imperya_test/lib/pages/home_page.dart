@@ -114,31 +114,39 @@ class _HomePageState extends State<HomePage> {
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
                                 children: [
-                                  Container(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.15,
-                                    height: MediaQuery.of(context).size.width *
-                                        0.15,
-                                    decoration: BoxDecoration(
-                                        color: ThemeApp.white,
-                                        borderRadius: BorderRadius.circular(10),
-                                        border:
-                                            Border.all(color: ThemeApp.gold),
-                                        image: DecorationImage(
-                                          image: NetworkImage(model.body![index]
-                                              .categoria!.pathImage!),
-                                        ),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: ThemeApp.gold,
-                                            offset: const Offset(
-                                              2.0,
-                                              2.0,
-                                            ),
-                                            blurRadius: 5.0,
-                                            spreadRadius: 0.05,
-                                          )
-                                        ]),
+                                  GestureDetector(
+                                    onTap: () => Navigator.pushNamed(
+                                        context, "Prodotti"),
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.15,
+                                      height:
+                                          MediaQuery.of(context).size.width *
+                                              0.15,
+                                      decoration: BoxDecoration(
+                                          color: ThemeApp.white,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          border:
+                                              Border.all(color: ThemeApp.gold),
+                                          image: DecorationImage(
+                                            image: NetworkImage(model
+                                                .body![index]
+                                                .categoria!
+                                                .pathImage!),
+                                          ),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: ThemeApp.gold,
+                                              offset: const Offset(
+                                                2.0,
+                                                2.0,
+                                              ),
+                                              blurRadius: 5.0,
+                                              spreadRadius: 0.05,
+                                            )
+                                          ]),
+                                    ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(4.0),
