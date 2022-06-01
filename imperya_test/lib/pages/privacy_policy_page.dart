@@ -2,6 +2,7 @@
 
 import 'dart:async';
 
+import 'package:Imperya/pages/home_page.dart';
 import 'package:Imperya/pages/register_page.dart';
 import 'package:Imperya/theme/theme_app.dart';
 import 'package:flutter/material.dart';
@@ -78,7 +79,7 @@ class _PolicyPageState extends State<PolicyPage> {
                           ),
                         ),
                         onPressed: () {
-                          Navigator.pushNamed(context, RegisterPage.tag);
+                          Navigator.pushNamed(context, HomePage.tag);
                         },
                         child: Text(
                           "Accetta",

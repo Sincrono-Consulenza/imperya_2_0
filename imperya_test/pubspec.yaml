@@ -33,12 +33,15 @@ dependencies:
 #grafica
   swatcher: ^0.1.0
   cupertino_icons: ^1.0.2
+  carousel_slider: ^4.1.1
 
 #layout
   sizer: ^2.0.15
 #supporto memoria
   shared_preferences: ^2.0.15
 
+#logica
+  http: ^0.13.3
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -103,14 +103,14 @@ class ThemeApp {
   static TextStyle smallTitleWhite({double size = 10}) => TextStyle(
         fontFamily: fontTitle,
         fontWeight: FontWeight.bold,
-        fontSize: 10.0,
+        fontSize: size,
         letterSpacing: 0.18,
         color: white,
       );
   static TextStyle smallTitleGold({double size = 10}) => TextStyle(
         fontFamily: fontTitle,
         fontWeight: FontWeight.bold,
-        fontSize: 10.0,
+        fontSize: size,
         letterSpacing: 0.18,
         color: gold,
       );
@@ -120,7 +120,7 @@ class ThemeApp {
   static TextStyle textBlack({double size = 15}) => TextStyle(
         fontFamily: fontTitle,
         fontWeight: FontWeight.normal,
-        fontSize: 15,
+        fontSize: size,
         letterSpacing: 0.18,
         color: black,
       );
