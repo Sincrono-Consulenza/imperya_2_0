@@ -57,6 +57,51 @@ class _HomePageState extends State<HomePage> {
           child: ListView(
             //widget che permette di avere una lista di oggetti/widget che vengono disposti in colonna ma a differenza del column, tutti gli elementi al suo interno sono scrollabili
             children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.12,
+                child: Row(
+                  children: [
+                    Expanded(child: SizedBox()),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.57,
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        decoration: BoxDecoration(
+                            color: ThemeApp.grey.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(50)),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(
+                              child: TextField(
+                            decoration:
+                                InputDecoration(suffixIcon: Icon(Icons.search)),
+                          )),
+                        ),
+                      ),
+                    ),
+                    Expanded(child: SizedBox()),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.2,
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        decoration: BoxDecoration(
+                            color: ThemeApp.grey.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(50)),
+                        child: Center(
+                          child: Icon(
+                            Icons.filter_list_alt,
+                            color: ThemeApp.gold,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(child: SizedBox()),
+                  ],
+                ),
+              ),
               FutureBuilder<BannerModel>(
                 //vedi definizione di tale widget nella page Privacy Policy : "../lib\pages\privacy_policy_page.dart"
                 // banners Linee
@@ -129,31 +174,39 @@ class _HomePageState extends State<HomePage> {
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
                                 children: [
-                                  Container(
-                                    width: MediaQuery.of(context).size.width *
-                                        0.15,
-                                    height: MediaQuery.of(context).size.width *
-                                        0.15,
-                                    decoration: BoxDecoration(
-                                        color: ThemeApp.white,
-                                        borderRadius: BorderRadius.circular(10),
-                                        border:
-                                            Border.all(color: ThemeApp.gold),
-                                        image: DecorationImage(
-                                          image: NetworkImage(model.body![index]
-                                              .categoria!.pathImage!),
-                                        ),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: ThemeApp.gold,
-                                            offset: const Offset(
-                                              2.0,
-                                              2.0,
-                                            ),
-                                            blurRadius: 5.0,
-                                            spreadRadius: 0.05,
-                                          )
-                                        ]),
+                                  GestureDetector(
+                                    onTap: () => Navigator.pushNamed(context,
+                                        "Prodotti"), //TODO: cambiare nome quando si aggiunge la pagina dei prodotti
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.15,
+                                      height:
+                                          MediaQuery.of(context).size.width *
+                                              0.15,
+                                      decoration: BoxDecoration(
+                                          color: ThemeApp.white,
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          border:
+                                              Border.all(color: ThemeApp.gold),
+                                          image: DecorationImage(
+                                            image: NetworkImage(model
+                                                .body![index]
+                                                .categoria!
+                                                .pathImage!),
+                                          ),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: ThemeApp.gold,
+                                              offset: const Offset(
+                                                2.0,
+                                                2.0,
+                                              ),
+                                              blurRadius: 5.0,
+                                              spreadRadius: 0.05,
+                                            )
+                                          ]),
+                                    ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(4.0),
