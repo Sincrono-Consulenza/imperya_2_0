@@ -8,6 +8,7 @@ class ProductService {
   static ProductService get instance => _instance;
 
   Future<LastProductModel> getLastProducts() async {
+    // vedi i commenti nella classe banner_service "..\lib\services\banner_service.dart"
     var url = Uri.parse(
         'https://ssl-conf.imperya.com:8943/ConfiguratorService/prodotto/listNewEntries');
     var response = await http.get(

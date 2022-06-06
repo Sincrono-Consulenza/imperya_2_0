@@ -1,7 +1,9 @@
 // ignore_for_file: sized_box_for_whitespace, avoid_unnecessary_containers, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:Imperya/elements/bottom_bar.dart';
 import 'package:Imperya/elements/card_product_last.dart';
 import 'package:Imperya/elements/caurosel_image.dart';
+import 'package:Imperya/elements/floating_cart_button.dart';
 import 'package:Imperya/elements/logo_app_bar.dart';
 import 'package:Imperya/models/banners.dart';
 import 'package:Imperya/models/last_products.dart';
@@ -30,6 +32,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: LogoAppBar(
+        //classe personalizzata che definisce l'app bar dell'app.
         leftPressed: () {},
         rightPressed: () {},
         showLogo: true,
@@ -39,15 +42,27 @@ class _HomePageState extends State<HomePage> {
         roundedEdge: true,
         searchWidget: () {},
       ),
+      drawer: Drawer(), //menu laterale - in questo caso è vuoto.
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation //posizione del bottone flottante - nell'app è il bottone che porta al carrello
+              .centerDocked, //specify the location of the FAB
+      floatingActionButton:
+          FloatingButtonCart(), //bottone centrale che porta al carrello
+      bottomNavigationBar:
+          BottomBar(), //barra inferiore di navigaizione - widget personalizzato: vedi "..\lib\elements\bottom_bar.dart"
       body: Container(
+          //container con altezza pari a tutto lo schermo del dispositivo preso in considerazione
           color: ThemeApp.white,
           height: MediaQuery.of(context).size.height,
           child: ListView(
+            //widget che permette di avere una lista di oggetti/widget che vengono disposti in colonna ma a differenza del column, tutti gli elementi al suo interno sono scrollabili
             children: [
               FutureBuilder<BannerModel>(
+                //vedi definizione di tale widget nella page Privacy Policy : "../lib\pages\privacy_policy_page.dart"
                 // banners Linee
                 initialData: banners,
-                future: BannerService.instance.getBanner(),
+                future: BannerService.instance
+                    .getBanner(), // invocazione del servizio ai banner tramite il singleton BannerService
                 builder: (context, AsyncSnapshot<BannerModel> snapshot) {
                   if (snapshot.hasData) {
                     banners = snapshot.data!;

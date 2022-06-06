@@ -10,11 +10,10 @@ import 'package:Imperya/theme/references.dart';
 import 'package:Imperya/theme/theme_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sizer/sizer.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
-  static String tag = 'login';
+  static String tag = 'login'; //route login
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -25,32 +24,22 @@ class _LoginPageState extends State<LoginPage> {
   final lang = Language();
 
 //controller
+// questi controller vengono inseriti nei textfield per poter accedere a dati che vengono inseriti in input - se non vengono istanziati - flutter non li riconosce e quindi non si ha accesso ai dati degli input (testi in questo caso)
   TextEditingController _email = new TextEditingController();
   TextEditingController _password = new TextEditingController();
 
 //obscure password
   bool showPsw = false;
-  Future<String> Login(String email, String passwrod) async {
-    return Future.delayed(Duration(seconds: 3)).then((value) async {
-      UserElement? currentUser = new UserElement(user: email, psw: passwrod);
-      final String response =
-          await rootBundle.loadString('assets/data/users.json');
-      final User data = User.fromJson(jsonDecode(response));
-
-      if (data.users.contains(currentUser))
-        value = "Login";
-      else
-        value = "null";
-
-      return value;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     Size screen = MediaQuery.of(context).size;
     return Scaffold(
       body: Stack(
+        // la scelta di utilizzare lo stack come widget base del body sta nella sua liberta di inserire i widget in un punto specifico tramite gli Alignment e
+        // dato che vi sono presenti elementi di input che sollevano la tastiera del dispositivo, gli elementi non vengono "spostati" da quest'ultima e quindi non ce bisogno di inserire
+        // un resizeToAvoidBottomInset per evitare tale problema.
+        //naturalmente si potrebbe utilizzare anche una column che inserisce gli elementi uno sotto l'altro invece di uno stack
         children: [
           Align(
             //logo
@@ -84,6 +73,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   FormTextField(
+                    //widget personalizzato. - vedi "..\lib\elements\form_text_filed.dart"
                     text: "Username",
                     controller: _email,
                     suffixIcon: Icon(Icons.people),
@@ -126,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       onPressed: () {
-                        Login(_email.text, _password.text);
+                        // qui si può invocare il metodo del login quando si preme il bottone
                       },
                       child: Text(
                         "Accedi",
@@ -181,6 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               )),
           Align(
+            //bottone per accedere senza login
             alignment: Alignment.bottomCenter,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -209,27 +200,6 @@ class _LoginPageState extends State<LoginPage> {
                   )),
             ),
           ),
-          // Align(
-          //   alignment: Alignment.bottomCenter,
-          //   child: Container(
-          //     width: screen.width,
-          //     height: screen.height * 0.1,
-          //     child: FutureBuilder(
-          //       initialData: "no data",
-          //       future: Login(_email.text, _password.text),
-          //       builder: (context, AsyncSnapshot<String> snapshot) {
-          //         if (snapshot.hasData) {
-          //           if (snapshot.data == "Login")
-          //             return Text("Login avvenuto con successo");
-          //           else
-          //             return Center(child: CircularProgressIndicator());
-          //         } else {
-          //           return Center(child: CircularProgressIndicator());
-          //         }
-          //       },
-          //     ),
-          //   ),
-          // ),
         ],
       ),
     );

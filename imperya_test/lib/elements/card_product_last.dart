@@ -1,4 +1,4 @@
-// ignore_for_file: sized_box_for_whitespace
+// ignore_for_file: sized_box_for_whitespace, prefer_const_constructors
 
 import 'package:Imperya/models/last_products.dart';
 import 'package:Imperya/theme/theme_app.dart';
@@ -12,6 +12,8 @@ class CardProductLast extends StatefulWidget {
 }
 
 class _CardProductLastState extends State<CardProductLast> {
+  bool isFavorite = false;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -90,17 +92,24 @@ class _CardProductLastState extends State<CardProductLast> {
                         right: 20.0,
                       ),
                       child: const Icon(
-                        Icons.shopping_cart_rounded,
+                        Icons.add_shopping_cart_outlined,
                         color: ThemeApp.gold,
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(
+                    Padding(
+                      padding: const EdgeInsets.only(
                         right: 4.0,
                       ),
-                      child: Icon(
-                        Icons.favorite,
-                        color: ThemeApp.grey,
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            isFavorite = !isFavorite;
+                          });
+                        },
+                        child: Icon(
+                          Icons.favorite,
+                          color: isFavorite ? Colors.red : ThemeApp.grey,
+                        ),
                       ),
                     ),
                   ],

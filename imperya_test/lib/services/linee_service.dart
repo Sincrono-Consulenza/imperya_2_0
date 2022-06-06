@@ -7,6 +7,7 @@ class LineeService {
   static LineeService get instance => _instance;
 
   Future<LineeModel> getLinee() async {
+    // vedi i commenti nella classe banner_service "..\lib\services\banner_service.dart"
     var url = Uri.parse(
         'https://ssl-conf.imperya.com:8943/ConfiguratorService/categoria/getLinee');
     var response = await http.get(

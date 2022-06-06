@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 
 class ThemeApp {
+  //classe singleton che serve per invocare stile e colori nei widget dell'app.
+  //classe per la gestione della grafica
   static final ThemeApp _instance = ThemeApp();
   static ThemeApp get instance => _instance;
 

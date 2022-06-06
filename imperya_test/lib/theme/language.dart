@@ -1,5 +1,7 @@
 import 'package:Imperya/theme/references.dart';
 
+//classe per la definizione della lingua e le varie traduzioni
+
 class Language {
   static final Language _instance = Language._internal();
 
