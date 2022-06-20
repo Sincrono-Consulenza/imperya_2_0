@@ -1,9 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:Imperya/pages/home_page.dart';
-import 'package:Imperya/pages/login_page.dart';
-import 'package:Imperya/pages/privacy_policy_page.dart';
-import 'package:Imperya/pages/register_page.dart';
+import 'package:Imperya/pages/pages.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

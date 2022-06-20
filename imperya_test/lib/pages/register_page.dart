@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class RegisterPage extends StatefulWidget {
-  RegisterPage({Key? key}) : super(key: key);
+  const RegisterPage({Key? key}) : super(key: key);
   static String tag = 'register';
 
   @override
@@ -13,7 +13,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Register"),
+        title: const Text("Register"),
       ),
     );
   }

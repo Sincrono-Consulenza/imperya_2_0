@@ -1,17 +1,9 @@
 // ignore_for_file: sized_box_for_whitespace, avoid_unnecessary_containers, prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:Imperya/elements/bottom_bar.dart';
-import 'package:Imperya/elements/card_product_last.dart';
-import 'package:Imperya/elements/caurosel_image.dart';
-import 'package:Imperya/elements/floating_cart_button.dart';
-import 'package:Imperya/elements/logo_app_bar.dart';
-import 'package:Imperya/models/banners.dart';
-import 'package:Imperya/models/last_products.dart';
-import 'package:Imperya/models/linee.dart';
-import 'package:Imperya/services/banner_service.dart';
-import 'package:Imperya/services/linee_service.dart';
-import 'package:Imperya/services/products_service.dart';
-import 'package:Imperya/theme/theme_app.dart';
+import 'package:Imperya/elements/elements.dart';
+import 'package:Imperya/models/models.dart';
+import 'package:Imperya/services/services.dart';
+import 'package:Imperya/theme/theme.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {

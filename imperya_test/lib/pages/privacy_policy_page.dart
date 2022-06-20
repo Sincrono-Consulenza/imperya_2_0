@@ -2,9 +2,8 @@
 
 import 'dart:async';
 
-import 'package:Imperya/pages/home_page.dart';
-import 'package:Imperya/pages/register_page.dart';
-import 'package:Imperya/theme/theme_app.dart';
+import 'package:Imperya/pages/pages.dart';
+import 'package:Imperya/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

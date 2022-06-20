@@ -1,13 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace, curly_braces_in_flow_control_structures, unnecessary_new, non_constant_identifier_names, prefer_final_fields
 
+import 'dart:async';
 import 'dart:convert';
-import 'package:Imperya/elements/form_text_filed.dart';
-import 'package:Imperya/models/users.dart';
-import 'package:Imperya/pages/privacy_policy_page.dart';
-import 'package:Imperya/pages/register_page.dart';
-import 'package:Imperya/theme/language.dart';
-import 'package:Imperya/theme/references.dart';
-import 'package:Imperya/theme/theme_app.dart';
+import 'package:Imperya/elements/elements.dart';
+import 'package:Imperya/models/models.dart';
+import 'package:Imperya/pages/pages.dart';
+import 'package:Imperya/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -23,6 +21,10 @@ class _LoginPageState extends State<LoginPage> {
   final prefs = References();
   final lang = Language();
 
+  //da eliminare e sostituire con il bloc
+  final loginController = StreamController<String>();
+  String logged = "";
+
 //controller
 // questi controller vengono inseriti nei textfield per poter accedere a dati che vengono inseriti in input - se non vengono istanziati - flutter non li riconosce e quindi non si ha accesso ai dati degli input (testi in questo caso)
   TextEditingController _email = new TextEditingController();
@@ -30,6 +32,23 @@ class _LoginPageState extends State<LoginPage> {
 
 //obscure password
   bool showPsw = false;
+
+  @override
+  void dispose() {
+    loginController.close();
+    super.dispose();
+  }
+
+  Future<void> login(String username, String password) async {
+    await Future.delayed(Duration(seconds: 1), () async {
+      logged = await rootBundle.loadString("assets/data/users.json");
+    });
+    //controllo dell'utenza
+    if (logged.contains(username))
+      loginController.sink.add("login");
+    else
+      loginController.sink.add("error");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,22 +126,60 @@ class _LoginPageState extends State<LoginPage> {
                     height: screen.height * 0.05,
                   ),
                   Center(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        fixedSize:
-                            Size(screen.width * 0.6, screen.height * 0.05),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                      ),
-                      onPressed: () {
-                        // qui si può invocare il metodo del login quando si preme il bottone
-                      },
-                      child: Text(
-                        "Accedi",
-                        style: ThemeApp.titleWhite(),
-                      ),
-                    ),
+                    child: StreamBuilder<String>(
+                        initialData: "",
+                        stream: loginController.stream,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData && snapshot.data == "login")
+                            Navigator.pushNamed(context, HomePage.tag);
+
+                          if (snapshot.hasData && snapshot.data == "error")
+                            return AlertDialog(
+                              title: Text("Username e/o password errati"),
+                              actions: [
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    fixedSize: Size(screen.width * 0.6,
+                                        screen.height * 0.05),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(25),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    // qui si può invocare il metodo del login quando si preme il bottone
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text(
+                                    "Indietro",
+                                    style: ThemeApp.titleWhite(),
+                                  ),
+                                )
+                              ],
+                            );
+                          if (snapshot.connectionState ==
+                                  ConnectionState.active &&
+                              snapshot.data == "load")
+                            return CircularProgressIndicator();
+                          else
+                            return ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                fixedSize: Size(
+                                    screen.width * 0.6, screen.height * 0.05),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                              ),
+                              onPressed: () {
+                                // qui si può invocare il metodo del login quando si preme il bottone
+                                loginController.sink.add("load");
+                                login(_email.text, _password.text);
+                              },
+                              child: Text(
+                                "Accedi",
+                                style: ThemeApp.titleWhite(),
+                              ),
+                            );
+                        }),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
