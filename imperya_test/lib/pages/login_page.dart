@@ -2,12 +2,16 @@
 
 import 'dart:async';
 import 'dart:convert';
+import 'package:Imperya/BLoC/Access/access_bloc.dart';
+import 'package:Imperya/BLoC/Access/access_event.dart';
+import 'package:Imperya/BLoC/Access/access_state.dart';
 import 'package:Imperya/elements/elements.dart';
 import 'package:Imperya/models/models.dart';
 import 'package:Imperya/pages/pages.dart';
+import 'package:Imperya/services/services.dart';
 import 'package:Imperya/theme/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -20,9 +24,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final prefs = References();
   final lang = Language();
-
+  AccessBloc? _bloc;
   //da eliminare e sostituire con il bloc
-  final loginController = StreamController<String>();
   String logged = "";
 
 //controller
@@ -34,20 +37,19 @@ class _LoginPageState extends State<LoginPage> {
   bool showPsw = false;
 
   @override
-  void dispose() {
-    loginController.close();
-    super.dispose();
+  void initState() {
+    var state = InitialAccessState();
+    _bloc = AccessBloc(
+        state,
+        AccessService
+            .instance); // iniezione della dipendenza del Servizio al bloc
+    super.initState();
   }
 
-  Future<void> login(String username, String password) async {
-    await Future.delayed(Duration(seconds: 1), () async {
-      logged = await rootBundle.loadString("assets/data/users.json");
-    });
-    //controllo dell'utenza
-    if (logged.contains(username))
-      loginController.sink.add("login");
-    else
-      loginController.sink.add("error");
+  @override
+  void dispose() {
+    _bloc!.close();
+    super.dispose();
   }
 
   @override
@@ -126,61 +128,12 @@ class _LoginPageState extends State<LoginPage> {
                     height: screen.height * 0.05,
                   ),
                   Center(
-                    child: StreamBuilder<String>(
-                        initialData: "",
-                        stream: loginController.stream,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData && snapshot.data == "login")
-                            Navigator.pushNamed(context, HomePage.tag);
-
-                          if (snapshot.hasData && snapshot.data == "error")
-                            return AlertDialog(
-                              title: Text("Username e/o password errati"),
-                              actions: [
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    fixedSize: Size(screen.width * 0.6,
-                                        screen.height * 0.05),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(25),
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    // qui si può invocare il metodo del login quando si preme il bottone
-                                    Navigator.pop(context);
-                                  },
-                                  child: Text(
-                                    "Indietro",
-                                    style: ThemeApp.titleWhite(),
-                                  ),
-                                )
-                              ],
-                            );
-                          if (snapshot.connectionState ==
-                                  ConnectionState.active &&
-                              snapshot.data == "load")
-                            return CircularProgressIndicator();
-                          else
-                            return ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                fixedSize: Size(
-                                    screen.width * 0.6, screen.height * 0.05),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(25),
-                                ),
-                              ),
-                              onPressed: () {
-                                // qui si può invocare il metodo del login quando si preme il bottone
-                                loginController.sink.add("load");
-                                login(_email.text, _password.text);
-                              },
-                              child: Text(
-                                "Accedi",
-                                style: ThemeApp.titleWhite(),
-                              ),
-                            );
-                        }),
-                  ),
+                      child: BlocBuilder<AccessBloc, BaseAccessState>(
+                    bloc: _bloc,
+                    builder: (context, state) {
+                      return accessBlocWidgets(state, context, screen);
+                    },
+                  )),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -260,5 +213,83 @@ class _LoginPageState extends State<LoginPage> {
         ],
       ),
     );
+  }
+
+  Widget accessBlocWidgets(
+      BaseAccessState state, BuildContext context, Size screen) {
+    Widget widget;
+    if (state is InitialAccessState) {
+      widget = ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          fixedSize: Size(screen.width * 0.6, screen.height * 0.05),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25),
+          ),
+        ),
+        onPressed: () {
+          // qui si può invocare il metodo del login quando si preme il bottone
+          var event = LoginEvent(_email.text, _password.text);
+          _bloc!.add(event);
+        },
+        child: Text(
+          "Accedi",
+          style: ThemeApp.titleWhite(),
+        ),
+      );
+    }
+    if (state is LoadingAccessState) {
+      widget = CircularProgressIndicator(
+        value: 50,
+      );
+    }
+    if (state is LoggedInState) {
+      Navigator.pushNamed(context, HomePage.tag);
+      widget = SizedBox();
+    }
+    if (state is ErrorAccessState) {
+      widget = Column(
+        children: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              fixedSize: Size(screen.width * 0.6, screen.height * 0.05),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(25),
+              ),
+            ),
+            onPressed: () {
+              var event = LoginEvent(_email.text, _password.text);
+
+              _bloc!.add(event);
+            },
+            child: Text(
+              "Accedi",
+              style: ThemeApp.titleWhite(),
+            ),
+          ),
+          Text(
+            state.message,
+            style: ThemeApp.textAlert(),
+          )
+        ],
+      );
+    } else {
+      widget = ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          fixedSize: Size(screen.width * 0.6, screen.height * 0.05),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25),
+          ),
+        ),
+        onPressed: () {
+          var event = LoginEvent(_email.text, _password.text);
+          _bloc!.add(event);
+        },
+        child: Text(
+          "Accedi",
+          style: ThemeApp.titleWhite(),
+        ),
+      );
+    }
+    return widget;
   }
 }
